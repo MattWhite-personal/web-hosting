@@ -260,6 +260,10 @@ resource "azurerm_virtual_machine" "mjwsite" {
     disable_password_authentication = false
   }
   */
+  identity {
+    identity_ids = []
+    type = "SystemAssigned"
+  }
   tags = local.tags
 }
 
@@ -280,7 +284,3 @@ resource "azurerm_managed_disk" "mjwsite-osdisk" {
   tags = local.tags
 }
 */
-output "mjw-pip" {
-  value = azurerm_public_ip.mjwsite.id
-}
-
