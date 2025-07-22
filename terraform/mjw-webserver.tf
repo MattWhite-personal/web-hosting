@@ -23,53 +23,7 @@ resource "azurerm_subnet" "mjwsite" {
   address_prefixes     = ["10.12.0.0/24"]
 
 }
-/*
-resource "azurerm_subnet" "mysql" {
-  name                 = "sn-uks-mysql"
-  resource_group_name  = azurerm_resource_group.webservers.name
-  virtual_network_name = azurerm_virtual_network.webservers.name
-  address_prefixes     = ["10.0.2.0/24"]
 
-  delegation {
-    name = "delegation"
-
-    service_delegation {
-      name    = "Microsoft.DBforMySQL/flexibleServers"
-    }
-  }
-}
-
-resource "azurerm_subnet" "appservice" {
-  name                 = "sn-uks-appservice"
-  resource_group_name  = azurerm_resource_group.webservers.name
-  virtual_network_name = azurerm_virtual_network.webservers.name
-  address_prefixes     = ["10.0.3.0/26"]
-
-  delegation {
-    name = "delegation"
-
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-    }
-  }
-}
-
-resource "azurerm_nat_gateway" "nat-gw" {
-  name                = "natgw-uks-whitefam"
-  location            = azurerm_resource_group.webservers.location
-  resource_group_name = azurerm_resource_group.webservers.name
-}
-
-resource "azurerm_subnet_nat_gateway_association" "appservice" {
-  subnet_id      = azurerm_subnet.appservice.id
-  nat_gateway_id = azurerm_nat_gateway.nat-gw.id
-}
-
-resource "azurerm_nat_gateway_public_ip_association" "nat-gw" {
-  nat_gateway_id       = azurerm_nat_gateway.nat-gw.id
-  public_ip_address_id = azurerm_public_ip.nat-gw.id
-}
-*/
 
 resource "azurerm_network_interface" "mjwsite" {
   #checkov:skip=CKV_AZURE_119:Public IP is by design
@@ -97,19 +51,6 @@ resource "azurerm_public_ip" "mjwsite" {
 
   tags = local.tags
 }
-
-/*
-resource "azurerm_public_ip" "nat-gw" {
-  name                = "RG-WhiteFam-UKS-vnet-ip"
-  resource_group_name = azurerm_resource_group.webservers.name
-  location            = azurerm_resource_group.webservers.location
-  allocation_method   = "Static"
-  ip_version          = "IPv4"
-  sku                 = "Standard"
-
-  tags = local.tags
-}
-*/
 
 resource "azurerm_network_security_group" "mjwsite" {
   name                = "nsg-uks-mjwsite"
@@ -229,20 +170,6 @@ resource "azurerm_virtual_machine" "mjwsite" {
     storage_uri = ""
   }
 
-  # Uncomment this line to delete the OS disk automatically when deleting the VM
-  # delete_os_disk_on_termination = true
-
-  # Uncomment this line to delete the data disks automatically when deleting the VM
-  # delete_data_disks_on_termination = true
-
-  /*
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
-    version   = "latest"
-  }
-*/
   storage_os_disk {
     name              = "mjwukwweb01-osdisk-20200801-153009"
     caching           = "ReadWrite"
@@ -252,39 +179,9 @@ resource "azurerm_virtual_machine" "mjwsite" {
     os_type           = "Linux"
   }
 
-  /*
-  os_profile {
-    computer_name  = "vm-uks-mjwsite"
-    admin_username = var.vm_admin_user
-    admin_password = var.vm_admin_password
-  }
-  
-  
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-  */
   identity {
     identity_ids = []
     type         = "SystemAssigned"
   }
   tags = local.tags
 }
-
-/*
-resource "azurerm_managed_disk" "mjwsite-osdisk" {
-  name                 = "mjwukwweb01-osdisk-20200801-153009"
-  location             = azurerm_resource_group.webservers.location
-  resource_group_name  = "RG-UKS-WEBSERVERS"
-  storage_account_type = "StandardSSD_LRS"
-  create_option        = "Restore"
-  disk_size_gb         = "30"
-  hyper_v_generation = "V1"
-  on_demand_bursting_enabled = false
-  os_type = "Linux"
-  trusted_launch_enabled = false
- # upload_size_bytes = 0
-
-  tags = local.tags
-}
-*/
