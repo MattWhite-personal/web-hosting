@@ -2,13 +2,13 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.7.0"
+      version = "~> 4.16.0"
     }
   }
   backend "azurerm" {
     storage_account_name = "stwhitefamterraform"
-    container_name = "tfstate"
-    key            = "web-hosting.tfstate"
+    container_name       = "tfstate"
+    key                  = "web-hosting.tfstate"
   }
 }
 provider "azurerm" {
