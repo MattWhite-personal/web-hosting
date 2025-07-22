@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "webservers" {
 }
 
 resource "azurerm_subnet" "mjwsite" {
-  #checkov-skip: CKV2_AZURE_31: "NSG applied to the network interface"
+  #checkov:skip=CKV2_AZURE_31:NSG applied to the network interface
   name                 = "sn-uks-mjwsite"
   resource_group_name  = azurerm_resource_group.webservers.name
   virtual_network_name = azurerm_virtual_network.webservers.name
@@ -72,7 +72,7 @@ resource "azurerm_nat_gateway_public_ip_association" "nat-gw" {
 */
 
 resource "azurerm_network_interface" "mjwsite" {
-  #checkov-skip: CKV_AZURE_119: "Public IP is by design"
+  #checkov:skip=CKV_AZURE_119:Public IP is by design
   name                = "nic-uks-mjwsite"
   location            = azurerm_resource_group.webservers.location
   resource_group_name = azurerm_resource_group.webservers.name
@@ -216,8 +216,8 @@ resource "azurerm_network_interface_security_group_association" "mjwsite" {
 }
 
 resource "azurerm_virtual_machine" "mjwsite" {
-  #checkov-skip: CKV2_AZURE_10: "Virtual Machine to be decommissioned soon"
-  #checkov-skip: CKV2_AZURE_12: "Virtual Machine to be decommissioned soon"
+  #checkov:skip=CKV2_AZURE_10:Virtual Machine to be decommissioned soon
+  #checkov:skip=CKV2_AZURE_12:Virtual Machine to be decommissioned soon
   name                         = "vm-uks-mjwsite"
   location                     = azurerm_resource_group.webservers.location
   resource_group_name          = azurerm_resource_group.webservers.name
