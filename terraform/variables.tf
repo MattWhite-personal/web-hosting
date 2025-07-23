@@ -26,12 +26,12 @@
 #  description = "name of azure storage account hosting state"
 #}
 
-variable "vm_admin_user" {
-  type      = string
-  sensitive = true
-}
+#variable "vm_admin_user" {
+#  type      = string
+#  sensitive = true
+#}
 
-variable "vm_admin_password" {
-  type      = string
-  sensitive = true
-}
+#variable "vm_admin_password" {
+#  type      = string
+#  sensitive = true
+#}
