@@ -7,7 +7,7 @@ output "dev-swa" {
 }
 
 output "mjw-dns-txt" {
-  value     = azurerm_static_web_app_custom_domain.matthewjwhite-co-uk.validation_token
+  value     = azurerm_static_web_app_custom_domain.matthewjwhite-co-uk.validation_token == "" ? "validated" : azurerm_static_web_app_custom_domain.matthewjwhite-co-uk.validation_token
   sensitive = true
 }
 
